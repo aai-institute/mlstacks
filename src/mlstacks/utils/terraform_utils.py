@@ -42,6 +42,7 @@ HIGH_LEVEL_COMPONENTS = [
     "experiment_tracker",
     "model_deployer",
     "step_operator",
+    "data_lake",
 ]
 
 CONFIG_DIR = get_app_dir(MLSTACKS_PACKAGE_NAME)
