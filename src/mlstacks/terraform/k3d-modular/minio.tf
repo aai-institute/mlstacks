@@ -1,5 +1,5 @@
 locals {
-  enable_minio = (var.enable_artifact_store || var.enable_experiment_tracker_mlflow)
+  enable_minio = (var.enable_artifact_store || var.enable_experiment_tracker_mlflow || var.enable_data_lake_lakefs)
 }
 module "minio_server" {
   source = "../modules/minio-module"

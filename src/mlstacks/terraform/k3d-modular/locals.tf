@@ -54,6 +54,11 @@ locals {
     ingress_host_prefix     = "mlflow"
   }
 
+  lakefs = {
+    version             = "1.0.12"
+    ingress_host_prefix = "lakefs"
+  }
+
   seldon = {
     version              = "1.15.0"
     name                 = "seldon"
