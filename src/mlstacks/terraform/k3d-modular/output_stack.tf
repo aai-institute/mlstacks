@@ -88,6 +88,17 @@ resource "local_file" "stack_file" {
           base_url:  "http://${var.enable_model_deployer_seldon ? module.istio[0].ingress-ip-address : ""}"
           kubernetes_secret_name: "${var.seldon-secret-name}"
 %{endif}
+%{if var.enable_data_lake_lakefs}
+      data_lake:
+        id: ${uuid()}
+        flavor: lakefs
+        name: k3d-lakefs-${random_string.cluster_id.result}
+        configuration:
+          base_url: "${module.lakefs[0].base_url}"
+          username: "${module.lakefs[0].admin.username}"
+          access_key_id: "${module.lakefs[0].admin.access_key_id}"
+          secret_key: "${module.lakefs[0].admin.secret_key}"
+%{endif}
     ADD
   filename = "./k3d_stack_${replace(substr(timestamp(), 0, 16), ":", "_")}.yaml"
 }
