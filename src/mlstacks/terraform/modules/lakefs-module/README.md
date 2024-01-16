@@ -44,5 +44,8 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_admin"></a> [admin](#output\_admin) | Credentials for the automatically created admin user |
+| <a name="output_base_url"></a> [base\_url](#output\_base\_url) | Base URL for the lakeFS web interface |
 <!-- END_TF_DOCS -->
