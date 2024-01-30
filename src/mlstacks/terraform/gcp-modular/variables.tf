@@ -43,6 +43,10 @@ variable "enable_zenml" {
   description = "Enable ZenML deployment"
   default     = false
 }
+variable "enable_data_lake_lakefs" {
+  description = "Enable lakeFS data lake"
+  default     = false
+}
 
 variable "bucket_name" {
   description = "The name of the GCS bucket"

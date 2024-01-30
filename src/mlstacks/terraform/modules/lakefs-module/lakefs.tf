@@ -8,7 +8,8 @@ resource "kubernetes_namespace" "lakefs" {
 locals {
   lakefsConfig = {
     database = {
-      type = "local"
+      type     = "${var.database_type}"
+      postgres = var.database_postgres
     }
     installation = {
       user_name         = "admin"
@@ -19,8 +20,11 @@ locals {
       enabled = false
     }
     blockstore = {
-      type = "s3"
-      s3 = {
+      type = "${var.storage_type}"
+      gs = var.storage_type != "gs" ? null : {
+        credentials_json : var.storage_gcs_credentials_json
+      }
+      s3 = var.storage_type != "s3" ? null : {
         region           = var.storage_S3_Region,
         endpoint         = "${var.storage_S3_Endpoint_URL}/${var.storage_S3_Bucket}"
         force_path_style = true

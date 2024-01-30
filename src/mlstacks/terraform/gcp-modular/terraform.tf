@@ -31,8 +31,9 @@ terraform {
     }
   }
 
-  backend "local" {
-    config = {}
+  backend "gcs" {
+    bucket = "zenml-mlstacks-remote-state-rplu0s"
+    prefix = "terraform/state"
   }
 
   required_version = ">= 0.14.8"

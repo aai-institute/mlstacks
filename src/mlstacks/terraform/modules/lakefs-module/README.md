@@ -31,15 +31,19 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | n/a | `string` | `"1.0.12"` | no |
+| <a name="input_database_postgres"></a> [database\_postgres](#input\_database\_postgres) | See lakeFS server configuration docs, section `database.postgresql`: https://docs.lakefs.io/reference/configuration.html | <pre>object({<br>    connection_string       = string,<br>    max_open_connections    = optional(number),<br>    max_idle_connections    = optional(number),<br>    connection_max_lifetime = optional(string),<br>  })</pre> | `null` | no |
+| <a name="input_database_type"></a> [database\_type](#input\_database\_type) | Database-related variables | `string` | n/a | yes |
 | <a name="input_ingress_host"></a> [ingress\_host](#input\_ingress\_host) | n/a | `string` | `""` | no |
 | <a name="input_istio_enabled"></a> [istio\_enabled](#input\_istio\_enabled) | n/a | `bool` | `false` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | n/a | `string` | `"lakefs"` | no |
-| <a name="input_storage_S3"></a> [storage\_S3](#input\_storage\_S3) | Storage-related variables | `bool` | `false` | no |
+| <a name="input_storage_S3"></a> [storage\_S3](#input\_storage\_S3) | S3(-like) storage variables | `bool` | `false` | no |
 | <a name="input_storage_S3_Access_Key"></a> [storage\_S3\_Access\_Key](#input\_storage\_S3\_Access\_Key) | n/a | `string` | `""` | no |
 | <a name="input_storage_S3_Bucket"></a> [storage\_S3\_Bucket](#input\_storage\_S3\_Bucket) | n/a | `string` | `""` | no |
 | <a name="input_storage_S3_Endpoint_URL"></a> [storage\_S3\_Endpoint\_URL](#input\_storage\_S3\_Endpoint\_URL) | n/a | `string` | `""` | no |
 | <a name="input_storage_S3_Region"></a> [storage\_S3\_Region](#input\_storage\_S3\_Region) | n/a | `string` | `"us-east-1"` | no |
 | <a name="input_storage_S3_Secret_Key"></a> [storage\_S3\_Secret\_Key](#input\_storage\_S3\_Secret\_Key) | n/a | `string` | `""` | no |
+| <a name="input_storage_gcs_credentials_json"></a> [storage\_gcs\_credentials\_json](#input\_storage\_gcs\_credentials\_json) | GCS storage variables | `string` | n/a | yes |
+| <a name="input_storage_type"></a> [storage\_type](#input\_storage\_type) | Storage-related variables | `string` | n/a | yes |
 | <a name="input_tls_enabled"></a> [tls\_enabled](#input\_tls\_enabled) | n/a | `bool` | `true` | no |
 
 ## Outputs

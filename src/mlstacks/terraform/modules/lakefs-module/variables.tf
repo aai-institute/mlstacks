@@ -23,7 +23,42 @@ variable "istio_enabled" {
   default = false
 }
 
+# Database-related variables
+variable "database_type" {
+  type = string
+  validation {
+    condition     = contains(["postgres", "local"], var.database_type)
+    error_message = "database_type must be any of: [postgres, local]"
+  }
+}
+
+variable "database_postgres" {
+  type = object({
+    connection_string       = string,
+    max_open_connections    = optional(number),
+    max_idle_connections    = optional(number),
+    connection_max_lifetime = optional(string),
+  })
+  description = "See lakeFS server configuration docs, section `database.postgresql`: https://docs.lakefs.io/reference/configuration.html"
+  default     = null
+}
+
 # Storage-related variables
+variable "storage_type" {
+  type = string
+  validation {
+    condition     = contains(["gs", "s3"], var.storage_type)
+    error_message = "storage_type must be any of: [gs, s3]"
+  }
+}
+
+# GCS storage variables
+variable "storage_gcs_credentials_json" {
+  type      = string
+  sensitive = true
+}
+
+# S3(-like) storage variables
 variable "storage_S3" {
   type    = bool
   default = false
@@ -37,12 +72,14 @@ variable "storage_S3_Bucket" {
   default = ""
 }
 variable "storage_S3_Access_Key" {
-  type    = string
-  default = ""
+  type      = string
+  sensitive = true
+  default   = ""
 }
 variable "storage_S3_Secret_Key" {
-  type    = string
-  default = ""
+  type      = string
+  sensitive = true
+  default   = ""
 }
 variable "storage_S3_Endpoint_URL" {
   type    = string

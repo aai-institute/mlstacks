@@ -92,6 +92,17 @@ resource "local_file" "stack_file" {
         name: gke_seldon
         configuration: {"kubernetes_context": "gke_${local.prefix}-${local.gke.cluster_name}", "kubernetes_namespace": "${local.seldon.workloads_namespace}", "base_url": "http://${module.istio[0].ingress-ip-address}:${module.istio[0].ingress-port}"}
 %{endif}
+%{if var.enable_data_lake_lakefs}
+      data_lake:
+        id: ${uuid()}
+        flavor: lakefs
+        name: gke_lakefs
+        configuration:
+          base_url: "${module.lakefs[0].base_url}"
+          username: "${module.lakefs[0].admin.username}"
+          access_key_id: "${module.lakefs[0].admin.access_key_id}"
+          secret_key: "${module.lakefs[0].admin.secret_key}"
+%{endif}
     ADD
   filename = "./gcp_modular_stack_${replace(substr(timestamp(), 0, 16), ":", "_")}.yaml"
 }
