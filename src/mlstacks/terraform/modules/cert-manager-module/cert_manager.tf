@@ -22,13 +22,12 @@ resource "helm_release" "cert-manager" {
 # create a cert-manager letsencrypt ClusterIssuer
 # cannot use kubernetes_manifest resource since it practically 
 # doesn't support CRDs. Going with kubectl instead.
-resource "kubectl_manifest" "letsencrypt" {
-  yaml_body = <<YAML
+resource "kubernetes_manifest" "letsencrypt" {
+  manifest = yamldecode(<<YAML
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging
-  namespace: cert-manager
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
@@ -39,7 +38,8 @@ spec:
     - http01:
         ingress:
           class: nginx
-YAML    
+YAML
+  )
   depends_on = [
     resource.helm_release.cert-manager
   ]
