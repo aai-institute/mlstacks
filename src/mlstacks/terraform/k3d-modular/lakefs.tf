@@ -13,11 +13,14 @@ module "lakefs" {
   ]
 
   # details about the lakefs deployment
-  chart_version           = local.lakefs.version
-  ingress_host            = (var.enable_model_deployer_seldon) ? "${local.lakefs.ingress_host_prefix}.${module.istio[0].ingress-ip-address}.nip.io" : "${local.lakefs.ingress_host_prefix}.${module.nginx-ingress[0].ingress-ip-address}.nip.io"
-  tls_enabled             = false
-  istio_enabled           = (var.enable_model_deployer_seldon) ? true : false
-  storage_S3              = true
+  chart_version = local.lakefs.version
+  ingress_host  = (var.enable_model_deployer_seldon) ? "${local.lakefs.ingress_host_prefix}.${module.istio[0].ingress-ip-address}.nip.io" : "${local.lakefs.ingress_host_prefix}.${module.nginx-ingress[0].ingress-ip-address}.nip.io"
+  tls_enabled   = false
+  istio_enabled = (var.enable_model_deployer_seldon) ? true : false
+
+  database_type = "local"
+
+  storage_type            = "s3"
   storage_S3_Access_Key   = var.zenml-minio-store-access-key
   storage_S3_Secret_Key   = var.zenml-minio-store-secret-key
   storage_S3_Bucket       = minio_s3_bucket.lakefs_bucket[0].bucket

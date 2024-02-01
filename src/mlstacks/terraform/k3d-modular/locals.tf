@@ -55,7 +55,7 @@ locals {
   }
 
   lakefs = {
-    version             = "1.0.12"
+    version             = "1.1.3"
     ingress_host_prefix = "lakefs"
   }
 

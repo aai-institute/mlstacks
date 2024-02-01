@@ -5,7 +5,7 @@ variable "namespace" {
 
 variable "chart_version" {
   type    = string
-  default = "1.0.12"
+  default = "1.1.3"
 }
 
 variable "ingress_host" {
@@ -56,13 +56,10 @@ variable "storage_type" {
 variable "storage_gcs_credentials_json" {
   type      = string
   sensitive = true
+  default   = ""
 }
 
 # S3(-like) storage variables
-variable "storage_S3" {
-  type    = bool
-  default = false
-}
 variable "storage_S3_Region" {
   type    = string
   default = "us-east-1"
