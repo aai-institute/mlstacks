@@ -8,29 +8,36 @@ resource "kubernetes_namespace" "lakefs" {
 locals {
   lakefsConfig = {
     database = {
-      type     = "${var.database_type}"
-      postgres = var.database_postgres
+      type = "${var.database_type}"
+      # filter sensitive information (passed through k8s secrets)
+      postgres = { for k, v in var.database_postgres : k => v if k != "connection_string" }
     }
-    installation = {
+
+    # admin user bootstrap is only applicable for local k/v store
+    installation = var.database_type != "local" ? null : {
       user_name         = "admin"
       access_key_id     = "admin"
       secret_access_key = "supersafepassword"
     }
+
+    # disable usage analytics
     stats = {
       enabled = false
     }
+
     blockstore = {
-      type = "${var.storage_type}"
+      type                     = "${var.storage_type}"
+      default_namespace_prefix = var.storage_type == "s3" ? "s3://${var.storage_s3.bucket}/" : null
       gs = var.storage_type != "gs" ? null : {
         credentials_json : var.storage_gcs_credentials_json
       }
       s3 = var.storage_type != "s3" ? null : {
-        region           = var.storage_S3_Region,
-        endpoint         = "${var.storage_S3_Endpoint_URL}/${var.storage_S3_Bucket}"
+        region           = var.storage_s3.region,
+        endpoint         = var.storage_s3.endpoint_url
         force_path_style = true
         credentials = {
-          access_key_id     = var.storage_S3_Access_Key,
-          secret_access_key = var.storage_S3_Secret_Key
+          access_key_id     = var.storage_s3.access_key_id
+          secret_access_key = var.storage_s3.secret_access_key
         }
       }
     }
@@ -94,6 +101,16 @@ resource "helm_release" "lakefs" {
     type  = "string"
   }
 
+  # Sensitive configuration options
+  dynamic "set" {
+    for_each = var.database_type == "postgres" ? [var.database_postgres.connection_string] : []
+    content {
+      name  = "secrets.databaseConnectionString"
+      value = set.value
+    }
+  }
+
+  # template values.yaml with full config block
   values = [
     templatefile("${path.module}/values.yaml.tftpl", {
       config = local.lakefsConfig

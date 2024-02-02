@@ -60,25 +60,16 @@ variable "storage_gcs_credentials_json" {
 }
 
 # S3(-like) storage variables
-variable "storage_S3_Region" {
-  type    = string
-  default = "us-east-1"
-}
-variable "storage_S3_Bucket" {
-  type    = string
-  default = ""
-}
-variable "storage_S3_Access_Key" {
-  type      = string
-  sensitive = true
-  default   = ""
-}
-variable "storage_S3_Secret_Key" {
-  type      = string
-  sensitive = true
-  default   = ""
-}
-variable "storage_S3_Endpoint_URL" {
-  type    = string
-  default = ""
+
+variable "storage_s3" {
+  type = object({
+    bucket            = string,
+    access_key_id     = string,
+    secret_access_key = string,
+    endpoint_url      = optional(string),
+    region            = optional(string, "us-east1"),
+    force_path_style  = optional(bool, false)
+  })
+  description = "S3 storage configuration, see section `blockstore.s3`: https://docs.lakefs.io/reference/configuration.html"
+  default     = null
 }

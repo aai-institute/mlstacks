@@ -8,8 +8,6 @@ module "lakefs" {
     k3d_cluster.zenml-cluster,
     module.nginx-ingress,
     module.istio,
-    module.minio_server,
-    minio_s3_bucket.lakefs_bucket,
   ]
 
   # details about the lakefs deployment
@@ -20,24 +18,25 @@ module "lakefs" {
 
   database_type = "local"
 
-  storage_type            = "s3"
-  storage_S3_Access_Key   = var.zenml-minio-store-access-key
-  storage_S3_Secret_Key   = var.zenml-minio-store-secret-key
-  storage_S3_Bucket       = minio_s3_bucket.lakefs_bucket[0].bucket
-  storage_S3_Endpoint_URL = module.minio_server[0].artifact_S3_Endpoint_URL
+  storage_type = "s3"
+  storage_s3 = {
+    endpoint_url      = module.minio_server[0].artifact_S3_Endpoint_URL
+    access_key_id     = var.zenml-minio-store-access-key
+    secret_access_key = var.zenml-minio-store-secret-key
+    bucket            = minio_s3_bucket.lakefs[0].bucket
+    force_path_style  = true
+  }
 }
 
-resource "random_string" "lakefs_bucket_suffix" {
-  length  = 6
-  special = false
-  upper   = false
+resource "random_id" "lakefs_bucket_suffix" {
+  byte_length = 4
 }
 
 # Create a bucket for lakeFS to use
-resource "minio_s3_bucket" "lakefs_bucket" {
+resource "minio_s3_bucket" "lakefs" {
   count = (var.enable_data_lake_lakefs && var.lakefs_minio_bucket == "") ? 1 : 0
 
-  bucket        = "lakefs-minio-${random_string.lakefs_bucket_suffix.result}"
+  bucket        = "lakefs-minio-${random_id.lakefs_bucket_suffix.hex}"
   force_destroy = true
 
   depends_on = [
