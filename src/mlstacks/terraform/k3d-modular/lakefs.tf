@@ -18,12 +18,12 @@ module "lakefs" {
 
   database_type = "local"
 
-  storage_type = "s3"
+  storage_type   = "s3"
+  storage_bucket = minio_s3_bucket.lakefs[0].bucket
   storage_s3 = {
     endpoint_url      = module.minio_server[0].artifact_S3_Endpoint_URL
     access_key_id     = var.zenml-minio-store-access-key
     secret_access_key = var.zenml-minio-store-secret-key
-    bucket            = minio_s3_bucket.lakefs[0].bucket
     force_path_style  = true
   }
 }

@@ -99,9 +99,11 @@ resource "local_file" "stack_file" {
         name: gke_lakefs
         configuration:
           base_url: "${module.lakefs[0].base_url}"
+          %{if module.lakefs[0].admin != null}
           username: "${module.lakefs[0].admin.username}"
           access_key_id: "${module.lakefs[0].admin.access_key_id}"
           secret_key: "${module.lakefs[0].admin.secret_key}"
+          %{endif}
 %{endif}
     ADD
   filename = "./gcp_modular_stack_${replace(substr(timestamp(), 0, 16), ":", "_")}.yaml"

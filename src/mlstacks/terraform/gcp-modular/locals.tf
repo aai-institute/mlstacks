@@ -13,9 +13,15 @@ locals {
   # For zones in google_container_cluster.gke, replace "${var.region}-a" to "${var.region}-d"
   # This is because "europe-west1-a" doesn't exist for some reason.
 
-  enable_gke = (var.enable_orchestrator_kubeflow || var.enable_orchestrator_tekton || var.enable_orchestrator_kubernetes ||
-    var.enable_model_deployer_seldon || var.enable_experiment_tracker_mlflow || var.enable_data_lake_lakefs ||
-  var.enable_zenml)
+  enable_gke = (
+    var.enable_orchestrator_kubeflow ||
+    var.enable_orchestrator_tekton ||
+    var.enable_orchestrator_kubernetes ||
+    var.enable_model_deployer_seldon ||
+    var.enable_experiment_tracker_mlflow ||
+    var.enable_data_lake_lakefs ||
+    var.enable_zenml
+  )
 
   gke = {
     cluster_name = "mycluster-${random_string.unique.result}"
@@ -78,12 +84,6 @@ locals {
     namespace            = "seldon-system"
     workloads_namespace  = "zenml-workloads-seldon"
     service_account_name = "seldon"
-  }
-
-  lakefs = {
-    version                = "1.1.3"
-    ingress_host_prefix    = "lakefs"
-    database_instance_tier = "db-f1-micro"
   }
 
   zenml = {

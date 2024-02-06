@@ -52,18 +52,26 @@ variable "storage_type" {
   }
 }
 
+# General storage variables
+variable "storage_bucket" {
+  type        = string
+  description = "Bucket name for object storage (automatically prepeded with appropriate protocol)"
+  default     = ""
+}
+
 # GCS storage variables
-variable "storage_gcs_credentials_json" {
-  type      = string
-  sensitive = true
-  default   = ""
+variable "storage_gcs" {
+  type = object({
+    credentials_json = string,
+  })
+  description = "GCS storage configuration, see section `blockstore.gs`: https://docs.lakefs.io/reference/configuration.html"
+  default     = null
+  sensitive   = true
 }
 
 # S3(-like) storage variables
-
 variable "storage_s3" {
   type = object({
-    bucket            = string,
     access_key_id     = string,
     secret_access_key = string,
     endpoint_url      = optional(string),
@@ -72,4 +80,5 @@ variable "storage_s3" {
   })
   description = "S3 storage configuration, see section `blockstore.s3`: https://docs.lakefs.io/reference/configuration.html"
   default     = null
+  sensitive   = true
 }
