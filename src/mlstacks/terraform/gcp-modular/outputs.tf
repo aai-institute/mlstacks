@@ -100,6 +100,31 @@ output "experiment_tracker_configuration" {
   }) : ""
 }
 
+# if lakeFS is enabled, set the data_lake outputs to the lakeFS values
+# otherwise, set the data_lake outputs to empty strings
+output "data_lake_id" {
+  value = var.enable_data_lake_lakefs ? uuid() : ""
+}
+
+output "data_lake_flavor" {
+  value = var.enable_data_lake_lakefs ? "lakefs" : ""
+}
+
+output "data_lake_name" {
+  value = var.enable_data_lake_lakefs ? "gke_lakefs" : ""
+}
+output "data_lake_configuration" {
+  value = var.enable_data_lake_lakefs ? jsonencode({
+    base_url      = module.lakefs[0].base_url
+    username      = module.lakefs[0].admin != null ? module.lakefs[0].admin.username : ""
+    access_key_id = module.lakefs[0].admin != null ? module.lakefs[0].admin.access_key_id : ""
+    secret_key    = module.lakefs[0].admin != null ? module.lakefs[0].admin.secret_key : ""
+  }) : ""
+}
+output "data_lake_lakefs_base_url" {
+  value = var.enable_data_lake_lakefs ? module.lakefs[0].base_url : null
+}
+
 # if seldon is enabled, set the model deployer outputs to the seldon values
 # otherwise, set the model deployer outputs to empty strings
 output "model_deployer_id" {

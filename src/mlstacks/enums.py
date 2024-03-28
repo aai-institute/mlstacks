@@ -31,6 +31,7 @@ class ComponentTypeEnum(str, Enum):
     FEATURE_STORE = "feature_store"
     ANNOTATOR = "annotator"
     IMAGE_BUILDER = "image_builder"
+    DATA_LAKE = "data_lake"
 
 
 class ComponentFlavorEnum(str, Enum):
@@ -40,6 +41,7 @@ class ComponentFlavorEnum(str, Enum):
     GCP = "gcp"
     KUBEFLOW = "kubeflow"
     KUBERNETES = "kubernetes"
+    LAKEFS = "lakefs"
     MINIO = "minio"
     MLFLOW = "mlflow"
     S3 = "s3"

@@ -46,3 +46,13 @@ resource "google_project_service" "vertex_ai" {
 
   disable_on_destroy = false
 }
+
+# enable service networking API
+resource "google_project_service" "servicenetworking" {
+  count = var.enable_data_lake_lakefs ? 1 : 0
+
+  project = var.project_id
+  service = "servicenetworking.googleapis.com"
+
+  disable_on_destroy = false
+}

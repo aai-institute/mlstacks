@@ -42,6 +42,7 @@ HIGH_LEVEL_COMPONENTS = [
     "experiment_tracker",
     "model_deployer",
     "step_operator",
+    "data_lake",
 ]
 
 CONFIG_DIR = get_app_dir(MLSTACKS_PACKAGE_NAME)
@@ -227,7 +228,7 @@ def tf_definitions_present(
 
 
 def include_files(
-    directory: str,  # noqa: ARG001
+    directory: str,
     filenames: List[str],
 ) -> List[str]:
     """Include files in Terraform definitions.
@@ -240,13 +241,17 @@ def include_files(
         The list of files to include in Terraform definitions, after
             filtering out any unwanted files.
     """
-    # Note the directory argument is required byTerraform
-    # though not used directly in this function
     return [
         filename
         for filename in filenames
         if not (
-            filename.endswith(".tf")
+            # Any subdirectories containing Terraform files
+            # Excludes folders with a leading dot (e.g., .terraform)
+            (
+                os.path.isdir(os.path.join(directory, filename))
+                and not filename.startswith(".")
+            )
+            or filename.endswith(".tf")
             or filename.endswith(".md")
             or filename.endswith(".yaml")
             or filename.endswith(".sh")

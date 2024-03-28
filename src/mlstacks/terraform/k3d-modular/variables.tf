@@ -31,7 +31,10 @@ variable "enable_zenml" {
   description = "Enable ZenML deployment"
   default     = false
 }
-
+variable "enable_data_lake_lakefs" {
+  description = "Enable lakeFS data lake"
+  default     = false
+}
 
 # variables for the MLflow tracking server and Minio S3 bucket
 variable "zenml-minio-store-access-key" {
@@ -63,6 +66,12 @@ variable "seldon-secret-name" {
   description = "The Seldon Core Model Deployer Secret name"
   default     = "zenml-seldon-secret"
   type        = string
+}
+
+# variables for the lakeFS data lake
+variable "lakefs_minio_bucket" {
+  description = "The name of the Minio bucket to use for lakeFS data lake. If no name is provided, a new bucket will be created."
+  default     = ""
 }
 
 # variables for creating a ZenML stack configuration file

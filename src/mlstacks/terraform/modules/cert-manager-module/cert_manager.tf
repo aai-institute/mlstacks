@@ -28,7 +28,6 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging
-  namespace: cert-manager
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
@@ -39,8 +38,9 @@ spec:
     - http01:
         ingress:
           class: nginx
-YAML    
+YAML
+
   depends_on = [
-    resource.helm_release.cert-manager
+    helm_release.cert-manager,
   ]
 }

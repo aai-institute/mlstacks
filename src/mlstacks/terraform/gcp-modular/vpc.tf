@@ -1,9 +1,7 @@
 module "vpc" {
-  count = (var.enable_orchestrator_kubeflow || var.enable_orchestrator_tekton || var.enable_orchestrator_kubernetes ||
-    var.enable_model_deployer_seldon || var.enable_experiment_tracker_mlflow ||
-  var.enable_zenml) ? 1 : 0
+  count   = local.enable_gke ? 1 : 0
   source  = "terraform-google-modules/network/google"
-  version = "~> 4.0"
+  version = "~> 9.0"
 
   project_id   = var.project_id
   network_name = "${local.prefix}-${local.vpc.name}-${random_string.unique.result}"

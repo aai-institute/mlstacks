@@ -13,6 +13,16 @@ locals {
   # For zones in google_container_cluster.gke, replace "${var.region}-a" to "${var.region}-d"
   # This is because "europe-west1-a" doesn't exist for some reason.
 
+  enable_gke = (
+    var.enable_orchestrator_kubeflow ||
+    var.enable_orchestrator_tekton ||
+    var.enable_orchestrator_kubernetes ||
+    var.enable_model_deployer_seldon ||
+    var.enable_experiment_tracker_mlflow ||
+    var.enable_data_lake_lakefs ||
+    var.enable_zenml
+  )
+
   gke = {
     cluster_name = "mycluster-${random_string.unique.result}"
     # important to use 1.22 or above due to a bug with Istio in older versions
