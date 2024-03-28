@@ -30,7 +30,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | n/a | `string` | `"1.1.3"` | no |
+| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | n/a | `string` | `"1.2.5"` | no |
 | <a name="input_database_postgres"></a> [database\_postgres](#input\_database\_postgres) | See lakeFS server configuration docs, section `database.postgresql`: https://docs.lakefs.io/reference/configuration.html | <pre>object({<br>    connection_string       = string,<br>    max_open_connections    = optional(number),<br>    max_idle_connections    = optional(number),<br>    connection_max_lifetime = optional(string),<br>  })</pre> | `null` | no |
 | <a name="input_database_type"></a> [database\_type](#input\_database\_type) | Database-related variables | `string` | n/a | yes |
 | <a name="input_ingress_host"></a> [ingress\_host](#input\_ingress\_host) | n/a | `string` | `""` | no |
