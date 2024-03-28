@@ -5,7 +5,7 @@ variable "namespace" {
 
 variable "chart_version" {
   type    = string
-  default = "1.1.3"
+  default = "1.2.5"
 }
 
 variable "ingress_host" {
