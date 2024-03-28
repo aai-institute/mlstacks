@@ -4,7 +4,7 @@ locals {
     database = {
       type = "${var.database_type}"
       # filter sensitive information (passed through k8s secrets)
-      postgres = { for k, v in var.database_postgres : k => v if k != "connection_string" }
+      postgres = { for k, v in coalesce(var.database_postgres, {}) : k => v if k != "connection_string" }
     }
 
     # admin user bootstrap is only applicable for local k/v store
