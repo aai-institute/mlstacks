@@ -245,7 +245,8 @@ def include_files(
         filename
         for filename in filenames
         if not (
-            # Any subdirectories containing Terraform files (but not, e.g., .terraform)
+            # Any subdirectories containing Terraform files
+            # Excludes folders with a leading dot (e.g., .terraform)
             (
                 os.path.isdir(os.path.join(directory, filename))
                 and not filename.startswith(".")
